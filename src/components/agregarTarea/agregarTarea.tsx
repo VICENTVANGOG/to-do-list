@@ -1,7 +1,8 @@
-"use client";
+'use client';
 
 import { Task } from "@/interfaces/tareas";
 import { useState } from 'react';
+import './tarea.css';
 
 interface AgregarTareaProps {
   onTareaAgregada: (tarea: Task) => void;
@@ -11,47 +12,77 @@ const AgregarTarea: React.FC<AgregarTareaProps> = ({ onTareaAgregada }) => {
   const [name, setName] = useState<string>('');
   const [date, setDate] = useState<string>('');
   const [description, setDescription] = useState<string>('');
+  const [idCounter, setIdCounter] = useState<number>(1);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const nuevaTarea: Task = { name, date, description, completed: false, id: Date.now() };
+    const nuevaTarea: Task = { 
+      id: idCounter, 
+      name, 
+      date, 
+      description, 
+      completed: false 
+    };
 
-    // Guardar en localStorage
-    const tareasGuardadas: Task[] = JSON.parse(localStorage.getItem('tareas') || '[]');
-    tareasGuardadas.push(nuevaTarea);
-    localStorage.setItem('tareas', JSON.stringify(tareasGuardadas));
+    try {
+      const response = await fetch('/api/to-do', { 
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(nuevaTarea),
+      });
 
-    onTareaAgregada(nuevaTarea);
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error(errorData.message);
+        return; 
+      }
 
-    setName('');
-    setDate('');
-    setDescription('');
+      const taskData = await response.json();
+      if (typeof onTareaAgregada === 'function') {
+        onTareaAgregada(taskData);
+      }
+
+      setIdCounter(prevCounter => prevCounter + 1);
+      setName('');
+      setDate('');
+      setDescription('');
+    } catch (error) {
+      console.error('Error al agregar tarea:', error);
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="Nombre de la tarea"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        required
-      />
-      <input
-        type="date"
-        value={date}
-        onChange={(e) => setDate(e.target.value)}
-        required
-      />
-      <textarea
-        placeholder="Descripción"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-        required
-      />
-      <button type="submit">Agregar Tarea</button>
-    </form>
+    <div className="task-form-container">
+      <form onSubmit={handleSubmit} className="task-form">
+        <h2 className="task-form__title">Nueva Tarea</h2>
+        <input
+          type="text"
+          placeholder="Nombre de la tarea"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+          className="task-form__input"
+        />
+        <input
+          type="date"
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+          required
+          className="task-form__input"
+        />
+        <textarea
+          placeholder="Descripción"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          required
+          className="task-form__textarea"
+        />
+        <button type="submit" className="task-form__button">Agregar Tarea</button>
+      </form>
+    </div>
   );
 };
 

@@ -1,0 +1,80 @@
+.task-form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .task-form {
+    background: white;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
+    width: 100%;
+    max-width: 400px;
+    transition: all 0.3s ease;
+  }
+  
+  .task-form__title {
+    color: #333;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-size: 1.5rem;
+  }
+  
+  .task-form__input,
+  .task-form__textarea {
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: none;
+    border-radius: 10px;
+    background: #f0f0f0;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    color: black;
+  }
+  
+  .task-form__textarea {
+    min-height: 100px;
+    resize: vertical;
+  }
+  
+  .task-form__input[type="date"] {
+    color: #333;
+  }
+  
+  .task-form__input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(0.5);
+  }
+  
+  .task-form__button {
+    width: 100%;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+  }
+  
+  .task-form__input:focus,
+  .task-form__textarea:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.5);
+  }
+  
+  .task-form__button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+  }
+  
+  .task-form__button:active {
+    transform: translateY(1px);
+  }
