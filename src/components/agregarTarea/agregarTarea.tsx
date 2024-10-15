@@ -1,7 +1,6 @@
-"use client";
-
+"use client"
 import { Task } from "@/interfaces/tareas";
-import { useState } from 'react';
+import React, { useState } from 'react';
 import './tarea.css';
 
 interface AgregarTareaProps {
@@ -47,7 +46,6 @@ const AgregarTarea: React.FC<AgregarTareaProps> = ({ onTareaAgregada }) => {
       if (typeof onTareaAgregada === 'function') {
         onTareaAgregada(taskData);
       }
-
 
       setName('');
       setDate('');
