@@ -28,6 +28,29 @@ export default function Tareas() {
     }
   };
 
+  const toggleTaskCompletion = async (task: Task) => {
+    try {
+      const response = await fetch('/api/to-do', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: task.id, completed: !task.completed }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al actualizar la tarea');
+      }
+
+      const updatedTask = await response.json();
+      setTasks((prevTasks) =>
+        prevTasks.map((t) => (t.id === updatedTask.id ? updatedTask : t))
+      );
+    } catch (error) {
+      console.error("Error updating task:", error);
+    }
+  };
+
   const completedTasks = tasks.filter(task => task.completed);
   const pendingTasks = tasks.filter(task => !task.completed);
 
@@ -46,13 +69,12 @@ export default function Tareas() {
             <h3 className="tarea-name">{task.name}</h3>
             <p className="tarea-description">{task.description}</p>
             <p className="tarea-date">{task.date}</p>
-            <p className={`tarea-status pending`}>
-              Pendiente
-            </p>
             <Checkbox 
-              defaultChecked={task.completed} 
+              checked={task.completed} 
+              onChange={() => toggleTaskCompletion(task)} 
               color="success" 
             />
+            <p className={`tarea-status pending`}>Pendiente</p>
           </li>
         ))}
       </ul>
@@ -64,9 +86,12 @@ export default function Tareas() {
             <h3 className="tarea-name">{task.name}</h3>
             <p className="tarea-description">{task.description}</p>
             <p className="tarea-date">{task.date}</p>
-            <p className={`tarea-status completed`}>
-              Completada
-            </p>
+            <Checkbox 
+              checked={task.completed} 
+              onChange={() => toggleTaskCompletion(task)} 
+              color="success" 
+            />
+            <p className={`tarea-status completed`}>Completada</p>
           </li>
         ))}
       </ul>

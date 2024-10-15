@@ -58,3 +58,20 @@ export async function  POST(req:Request) {
 
     return NextResponse.json(newTask, { status: 201})
 }
+
+
+export async function PUT(req: Request) {
+  const { id, completed }: { id: number; completed: boolean } = await req.json();
+
+  const taskIndex = taskList.findIndex((task) => task.id === id);
+  if (taskIndex === -1) {
+    return NextResponse.json(
+      { message: "Tarea no encontrada" },
+      { status: 404 }
+    );
+  }
+
+  taskList[taskIndex].completed = completed;
+
+  return NextResponse.json(taskList[taskIndex]);
+}

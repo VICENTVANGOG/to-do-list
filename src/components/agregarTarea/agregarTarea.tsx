@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { Task } from "@/interfaces/tareas";
 import { useState } from 'react';
@@ -12,13 +12,16 @@ const AgregarTarea: React.FC<AgregarTareaProps> = ({ onTareaAgregada }) => {
   const [name, setName] = useState<string>('');
   const [date, setDate] = useState<string>('');
   const [description, setDescription] = useState<string>('');
-  const [idCounter, setIdCounter] = useState<number>(1);
+
+  const generateRandomId = () => {
+    return Math.floor(Math.random() * 1000000) + Date.now(); 
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const nuevaTarea: Task = { 
-      id: idCounter, 
+      id: generateRandomId(), 
       name, 
       date, 
       description, 
@@ -45,10 +48,13 @@ const AgregarTarea: React.FC<AgregarTareaProps> = ({ onTareaAgregada }) => {
         onTareaAgregada(taskData);
       }
 
-      setIdCounter(prevCounter => prevCounter + 1);
+
       setName('');
       setDate('');
       setDescription('');
+
+      window.location.href = '/'; 
+
     } catch (error) {
       console.error('Error al agregar tarea:', error);
     }
@@ -80,7 +86,7 @@ const AgregarTarea: React.FC<AgregarTareaProps> = ({ onTareaAgregada }) => {
           required
           className="task-form__textarea"
         />
-        <button type="submit" className="task-form__button">Agregar Tarea</button>
+        <button type="submit" className="task-form__button">Agregar Tarea</button> 
       </form>
     </div>
   );
