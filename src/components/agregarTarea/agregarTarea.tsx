@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import './tarea.css';
 
 interface AgregarTareaProps {
-  onTareaAgregada: (tarea: Task) => void;
+  onTareaAgregada?: (tarea: Task) => void;
 }
 
 const AgregarTarea: React.FC<AgregarTareaProps> = ({ onTareaAgregada }) => {
